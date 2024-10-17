@@ -1,0 +1,14 @@
+.carousel__pagination-button::after {
+  background-color: rgba(217, 217, 217, 0.5);
+  height: 10px;
+  width: 10px;
+  border-radius: 50%;
+}
+.carousel__pagination-button--active::after,
+.carousel__pagination-button:hover::after {
+  background-color: rgba(217, 217, 217);
+}
+.carousel__item {
+  min-height: 200px;
+  width: 100%;
+}
