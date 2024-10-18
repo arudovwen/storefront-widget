@@ -30,7 +30,6 @@ import MainContent from "@/components/cart/MainContent.vue";
 import SideContent from "@/components/cart/SideContent.vue";
 import AppButton from "@/components/AppButton.vue";
 import { onMounted, provide, ref } from "vue";
-import { useRouter } from "vue-router";
 
 import { confirmpurchase } from "~/services/cartservice";
 import { toast } from "vue3-toastify";
@@ -41,7 +40,6 @@ import { useRouteStore } from "@/stores/routes";
 
 const routeStore = useRouteStore();
 
-const router = useRouter();
 const shippingStore = useShippingStore();
 const authStore = useAuthStore();
 const cartStore = useCartStore();
@@ -56,7 +54,8 @@ function handleProceed() {
     return;
   }
 
-  router.push("/order/checkout");
+  // router.push("/order/checkout");
+  routeStore.setActiveRoute("checkout");
 }
 function handleOrderRequest() {
   if (!authStore.isLoggedIn) {
@@ -70,7 +69,14 @@ function handleOrderRequest() {
       if (res.status === 200) {
         loading.value = false;
         cartStore?.clearCart();
-        window.location.href = `/order-success?orderId=${res.data.data}&order_type=requests`;
+        // window.location.href = `/order-success?orderId=${res.data.data}&order_type=requests`;
+        const data = {
+          orderId: res.data.data,
+          order_type: "requests",
+        };
+
+        routeStore.setMeta({ success: data });
+        routeStore.setActiveRoute("success");
       }
     })
     .catch((err) => {

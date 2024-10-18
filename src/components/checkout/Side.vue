@@ -115,6 +115,7 @@ import { confirmpurchase, confirmpayment } from "~/services/cartservice";
 import { nanoid } from "nanoid";
 import { useAuthStore } from "@/stores/auth";
 import { payWithMonnify } from "@/utils/monnify";
+import { useRouteStore } from "@/stores/routes";
 // import { useRouter } from "vue-router";
 
 const isPopOpen = inject("isPopOpen");
@@ -124,7 +125,7 @@ const shippingStore = useShippingStore();
 const authStore = useAuthStore();
 const cartStore = useCartStore();
 const loading = ref(false);
-// const router = useRouter();
+const routeStore = useRouteStore();
 
 const data = ref(null);
 const status = ref("Confirm order");
@@ -177,17 +178,22 @@ function confirmOrder() {
   }
 }
 function onSuccess(response) {
-  console.log("🚀 ~ onSuccess ~ response:", response);
-  console.log("🚀 ~ onSuccess ~ data.value.orderId:", data.value.orderId);
   if (response.status.toLowerCase() === "success") {
     confirmpayment({ orderId: data.value.orderId })
       .then((res) => {
         if (res.status === 200) {
           cartStore?.clearCart();
-          window.location.href = `/order-success?orderId=${data.value.orderId}`;
+          // window.location.href = `/order-success?orderId=${data.value.orderId}`;
+          const metadata = {
+            orderId: data.value.orderId,
+          };
+
+          routeStore.setMeta({ success: metadata });
+          routeStore.setActiveRoute("success");
         }
       })
       .catch((err) => {
+        console.log("🚀 ~ onSuccess ~ err:", err);
         const error = `${
           err?.response?.data?.Message || err?.response?.data?.message
         }, Contact us for assistance on your order`;
@@ -208,10 +214,18 @@ function handleOrderRequest() {
       if (res.status === 200) {
         requestLoading.value = false;
         cartStore?.clearCart();
-        window.location.href = `/order-success?orderId=${res.data.data}&order_type=requests`;
+        // window.location.href = `/order-success?orderId=${res.data.data}&order_type=requests`;
+        const metadata = {
+          orderId: res.data.data,
+          order_type: "requests",
+        };
+
+        routeStore.setMeta({ success: metadata });
+        routeStore.setActiveRoute("success");
       }
     })
     .catch((err) => {
+      console.log("🚀 ~ handleOrderRequest ~ err:", err);
       const error = `${
         err?.response?.data?.Message || err?.response?.data?.message
       }, Contact us for assistance on your order`;

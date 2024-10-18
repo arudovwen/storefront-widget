@@ -30,7 +30,6 @@ const routeStore = useRouteStore();
 
 <template>
   <div class="bg-[#F4F4F4] w-screen h-screen overflow-y-auto pt-6 pb-20">
-    Homw
     <!-- <RouterView /> -->
     <VendorIndex v-if="routeStore.activeRoute === 'home'" />
     <CartView v-if="routeStore.activeRoute === 'cart'" />

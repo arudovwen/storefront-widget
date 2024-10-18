@@ -1,5 +1,5 @@
 <template>
-  <div @click="productUrl" class="w-full block">
+  <div @click="productUrl" class="w-full block cursor-pointer">
     <div
       class="w-full min-w-[160px] sm:max-w-[160px] md:min-w-[200px] md:max-w-[200px] xl:max-w-[280px] bg-white darks:bg-gray-800 rounded-[10px] shadow-[0px_2px_8px_0px_rgba(0,0,0,0.05)] darks:shadow-[0px_2px_8px_0px_rgba(0,0,0,0.1)] overflow-hidden"
     >
@@ -85,7 +85,7 @@ const productUrl = () => {
     productTitle,
     productId,
   };
-  console.log("🚀 ~ productUrl ~ data:", data);
+
   routeStore.setMeta({ detail: data });
   routeStore.setActiveRoute("detail");
 };
