@@ -1,5 +1,5 @@
 <template>
-  <RouterLink :to="productUrl" class="w-full block">
+  <div @click="productUrl" class="w-full block">
     <div
       class="w-full min-w-[160px] sm:max-w-[160px] md:min-w-[200px] md:max-w-[200px] xl:max-w-[280px] bg-white darks:bg-gray-800 rounded-[10px] shadow-[0px_2px_8px_0px_rgba(0,0,0,0.05)] darks:shadow-[0px_2px_8px_0px_rgba(0,0,0,0.1)] overflow-hidden"
     >
@@ -64,29 +64,29 @@
         </div>
       </div>
     </div>
-  </RouterLink>
+  </div>
 </template>
 
 <script setup>
-import { computed } from "vue";
-import { useRoute } from "vue-router";
 import AppIcon from "../AppIcon.vue";
 import currencyFormat from "@/utils/currencyFormat";
+import { useRouteStore } from "@/stores/routes";
 
 // Define props
 const props = defineProps(["detail"]);
-
+const routeStore = useRouteStore();
 // Use route composable
-const route = useRoute();
 
 // Computed property for product URL
-const productUrl = computed(() => {
+const productUrl = () => {
   const productTitle = encodeURIComponent(props.detail.title);
-  const routeTitle = route.params?.title
-    ? `/${encodeURIComponent(route.params.title)}`
-    : "";
   const productId = props.detail.id;
-
-  return `/product/${productTitle}${routeTitle}/${productId}`;
-});
+  const data = {
+    productTitle,
+    productId,
+  };
+  console.log("🚀 ~ productUrl ~ data:", data);
+  routeStore.setMeta({ detail: data });
+  routeStore.setActiveRoute("detail");
+};
 </script>

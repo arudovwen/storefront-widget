@@ -3,7 +3,7 @@
     <div class="flex-1 flex flex-col gap-y-3 container">
       <div class="mb-6">
         <AppButton
-          @click="router.push(`/`)"
+          @click="routeStore.setActiveRoute('home')"
           icon="ion:arrow-back-sharp"
           text="Back to storefront"
           btnClass="text-xs sm:text-sm !py-0 !px-0 !font-semibold"
@@ -37,8 +37,10 @@ import { toast } from "vue3-toastify";
 import { useShippingStore } from "@/stores/shipping";
 import { useAuthStore } from "@/stores/auth";
 import { useCartStore } from "@/stores/cart";
+import { useRouteStore } from "@/stores/routes";
 
-const vendor = window.matta.vendor;
+const routeStore = useRouteStore();
+
 const router = useRouter();
 const shippingStore = useShippingStore();
 const authStore = useAuthStore();

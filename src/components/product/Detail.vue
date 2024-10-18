@@ -293,12 +293,13 @@ import { computed, inject, provide, ref, watch } from "vue";
 import { useCartStore } from "@/stores/cart";
 import { useAuthStore } from "@/stores/auth";
 import { useSupplierStore } from "@/stores/supplier";
-import { useRoute, useRouter } from "vue-router";
+import { useRouter } from "vue-router";
 import { storeToRefs } from "pinia";
 import { useShippingStore } from "@/stores/shipping";
 import Sample from "../Requests/Sample.vue";
 import Quote from "../Requests/Quote.vue";
 import Auth from "../Modal/Auth.vue";
+import { useRouteStore } from "@/stores/routes";
 
 const isRequestAdded = ref(false);
 const isLoading = inject("isLoading");
@@ -309,12 +310,12 @@ const authStore = useAuthStore();
 const supplierStore = useSupplierStore();
 const { productData } = storeToRefs(store);
 const isAdded = ref(false);
-const route = useRoute();
+// const route = useRoute();
 const router = useRouter();
 const selectedPackage = ref(null);
-const { name, category } = route.params;
+// const { name, category } = route.params;
 const imageUrl = ref(productData?.value?.featuredPhoto);
-const vendor = window.matta.vendor;
+const routeStore = useRouteStore();
 const packageOptions = computed(() =>
   productData?.value?.packagesAvailable?.map((i) => {
     return {
@@ -328,16 +329,10 @@ const packageOptions = computed(() =>
 const links = [
   {
     title: "Storefront",
-    url: `/`,
+    url: `home`,
   },
   {
-    title: category,
-    url: `/category/market/${category}/${
-      route.query.categoryId ? route.query.categoryId : ""
-    }`,
-  },
-  {
-    title: name,
+    title: routeStore.metadata?.detail?.productTitle,
     url: "#",
   },
 ];

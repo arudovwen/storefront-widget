@@ -49,7 +49,6 @@
 import { inject, onMounted } from "vue";
 import { getStoreInfo } from "~/services/productservices";
 import { useProductStore } from "~/stores/products";
-import { useRoute } from "vue-router";
 import { storeToRefs } from "pinia";
 import Breadcrumbs from "@/components/Breadcrumbs/index.vue";
 import Select from "@/components/Select/index.vue";
@@ -57,12 +56,12 @@ import Select from "@/components/Select/index.vue";
 const query = inject("query");
 const store = useProductStore();
 const { total } = storeToRefs(store);
-const router = useRoute();
+
 const vendor = window.matta.vendor;
 const vendorInfo = inject("vendorInfo");
 
 const links = [
-  { title: "Storefront", url: "/" },
+  { title: "Storefront", url: "home" },
   { title: vendor, url: "#" },
 ];
 

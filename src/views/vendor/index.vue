@@ -9,17 +9,17 @@
         </div>
         <div class="flex-1 flex flex-col gap-y-8 overflow-y-auto no-scrollbar">
           <StorefrontContent />
-       <div class="flex justify-center">
-        <Pagination
-            v-if="productStore.productsData.length"
-            :total="productStore.total"
-            :current="query.PageNumber"
-            :per-page="query.PageSize"
-            :pageRange="pageRange"
-            @page-changed="(page) => query.PageNumber = page"
-            @perPageChanged="perPage"
-          />
-       </div>
+          <div class="flex justify-center">
+            <Pagination
+              v-if="productStore.productsData.length"
+              :total="productStore.total"
+              :current="query.PageNumber"
+              :per-page="query.PageSize"
+              :pageRange="pageRange"
+              @page-changed="(page) => (query.PageNumber = page)"
+              @perPageChanged="perPage"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -38,7 +38,7 @@ import Pagination from "@/components/Pagination/index.vue";
 
 const productStore = useProductStore();
 const route = useRoute();
-console.log(window.matta.matta)
+console.log(window.matta.matta);
 const vendorInfo = ref(null);
 const pageRange = 5;
 
@@ -69,14 +69,17 @@ function getAllProducts() {
     producers: query.producers,
   };
 
-  const fetchProducts = route.query.tag ? getProductsByTag({ ...params, tag: route.query.tag }) : getProducts(query);
+  const fetchProducts = route.query.tag
+    ? getProductsByTag({ ...params, tag: route.query.tag })
+    : getProducts(query);
 
   fetchProducts
     .then((res) => {
-    
       if (res.status === 200) {
-        productStore.setProducts( res?.data);
-        query.totalData = res.data.data ? res.data.data.totalCount : res.data.totalCount;
+        productStore.setProducts(res?.data);
+        query.totalData = res.data.data
+          ? res.data.data.totalCount
+          : res.data.totalCount;
       }
     })
     .catch(() => {
@@ -92,7 +95,13 @@ onMounted(() => {
 });
 
 watch(
-  () => [query.producers, query.PageNumber, query.sortOrder, query.sortBy, query.applications],
+  () => [
+    query.producers,
+    query.PageNumber,
+    query.sortOrder,
+    query.sortBy,
+    query.applications,
+  ],
   () => {
     getAllProducts();
   }

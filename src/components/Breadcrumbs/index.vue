@@ -8,12 +8,15 @@
           link.title && `after:content-['/']`
         }  font-light last:font-semibold text-[10px] sm:text-xs lg:text-sm capitalize  last:after:content-[''] flex gap-x-1 items-center`"
       >
-        <RouterLink :to="link.url" class="">
+        <button @click="routeStore.setActiveRoute(link.url)" class="">
           {{ link.title }}
-        </RouterLink>
+        </button>
       </li>
     </ul>
-    <RouterLink to="/customer/cart" class="flex items-center relative">
+    <button
+      @click="routeStore.setActiveRoute('cart')"
+      class="flex items-center relative"
+    >
       <span
         class="relative h-8 w-8 rounded-full bg-[#F7F7F7] flex items-center justify-center"
       >
@@ -27,14 +30,16 @@
       <span class="text-xs sm:text-sm font-medium inline-flex text-[#333]"
         >Cart</span
       >
-    </RouterLink>
+    </button>
   </div>
 </template>
 <script setup>
 import { useCartStore } from "@/stores/cart";
 import AppIcon from "../AppIcon.vue";
+import { useRouteStore } from "@/stores/routes";
 
 const cartStore = useCartStore();
+const routeStore = useRouteStore();
 defineProps({
   className: {
     type: String,
@@ -46,7 +51,7 @@ defineProps({
     default: [
       {
         title: "storefront",
-        url: "/",
+        url: "home",
       },
     ],
   },

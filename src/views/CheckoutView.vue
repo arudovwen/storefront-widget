@@ -3,7 +3,7 @@
     <div class="container py-10 w-full flex-1">
       <div class="mb-6">
         <AppButton
-          link="/customer/cart"
+          @click="routeStore.setActiveRoute('cart')"
           icon="ion:arrow-back-sharp"
           text="Back to cart"
           btnClass="text-xs sm:text-sm !py-0 !px-0 !font-semibold"
@@ -29,7 +29,9 @@ import { ref, onMounted, provide, computed } from "vue";
 import { getalladdress } from "@/services/cartservice";
 import { useRoute } from "vue-router";
 import { useCartStore } from "@/stores/cart";
+import { useRouteStore } from "@/stores/routes";
 
+const routeStore = useRouteStore();
 const refresh = ref(false);
 const route = useRoute();
 const addresses = ref([]);
